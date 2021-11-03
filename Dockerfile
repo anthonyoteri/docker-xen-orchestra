@@ -4,6 +4,7 @@ FROM registry.anthonyoteri.com/docker-yarn:slim
 RUN apt-get update && apt-get install -y \
     libpng-dev \
     git \
+    gettext \
     python3 \
     libvhdi-utils \
     lvm2 \
@@ -21,10 +22,6 @@ RUN git clone -b master https://github.com/vatesfr/xen-orchestra . && \
 VOLUME /config
 EXPOSE 443
 COPY root/ /
-
-RUN apt-get update && \
-    apt-get install -y gettext && \
-    rm -rf /var/lib/apt/lists/*
 
 ENV REDIS_URL redis://localhost:6379/0
 COPY entrypoint.sh /entrypoint.sh
