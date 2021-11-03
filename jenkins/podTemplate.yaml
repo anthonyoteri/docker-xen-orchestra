@@ -1,0 +1,15 @@
+---
+apiVersion: v1
+kind: Pod
+spec:
+  containers:
+  - name: docker
+    image: docker:dind
+    securityContext:
+      privileged: true
+    volumeMounts:
+      - name: docker-storage
+        mountPath: /var/lib/docker
+  volumes:
+    - name: docker-storage
+      emptyDir: {}

@@ -1,0 +1,52 @@
+pipeline {
+    agent {
+        kubernetes {
+            yamlFile 'jenkins/podTemplate.yaml'
+            defaultContainer 'docker'
+        }
+    }
+
+    environment {
+        REG = "registry.anthonyoteri.com"
+        REPO = "xen-orchestra"
+        DATE_TAG = java.time.LocalDate.now()
+    }
+
+    options {
+        ansiColor('xterm')
+    }
+
+    stages {
+               
+        stage('Slim') {
+            steps {
+                sh "docker build -t ${REPO}:slim ."
+            }
+            post {
+                success {
+                    sh "docker tag ${REPO}:slim ${REG}/${REPO}:slim-${DATE_TAG}"
+                }
+            }
+        }
+
+        stage('Tag latest') {
+            steps {
+                sh "docker tag ${REG}/${REPO}:slim-${DATE_TAG} ${REG}/${REPO}:slim"
+             }
+        }
+
+        stage('Push images') {
+            steps {
+                sh "docker push ${REG}/${REPO}:slim-${DATE_TAG}"
+                sh "docker push ${REG}/${REPO}:slim"
+            }
+
+            post {
+                success {
+                    sh "docker tag ${REG}/${REPO}:slim ${REG}/${REPO}:latest"
+                    sh "docker push ${REG}/${REPO}:latest"
+                }
+            }
+        }
+    }
+}
