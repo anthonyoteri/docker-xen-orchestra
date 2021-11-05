@@ -46,11 +46,12 @@ RUN ln -sf /config /etc/xo-server
 
 COPY --from=build ./xen-orchestra /app
 COPY config.toml /tmp
-COPY entrypoint.sh /
+COPY entrypoint.sh /usr/local/bin/
 
 VOLUME /config
 EXPOSE 443
 WORKDIR /app/packages/xo-server
 
 ENV REDIS_URI redis://localhost:6379/0
-CMD ["/entrypoint.sh", "yarn", "start"]
+ENTRYPOINT ["entrypoint.sh"]
+CMD ["yarn", "start"]
