@@ -1,10 +1,10 @@
 version: "3.9"
 services:
   db:
-    image: redis
+    image: redis:5.0.3
   orchestra:
     build: .
-    image: registry.anthonyoteri.com/docker-xen-orchestra
+    image: registry.anthonyoteri.com/xen-orchestra:latest
     ports:
       - "8443:443"
     volumes:

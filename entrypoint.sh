@@ -1,7 +1,5 @@
 #!/bin/bash
 
-CONFIG=/etc/xo-server/config.toml
-
-cat ${CONFIG}.template | envsubst > $CONFIG
+cat /tmp/config.toml | envsubst > /config/config.toml
 
 exec "$@"
