@@ -5,6 +5,7 @@ services:
     command: ["redis-server", "--save", "60 ", "1"]
     volumes:
       - redis:/data
+    restart: unless-stopped
   orchestra:
     build: .
     image: registry.anthonyoteri.com/xen-orchestra:latest
@@ -16,6 +17,7 @@ services:
      - db
     environment:
       - REDIS_URI=redis://db:6379/0
+    restart: unless-stopped
 volumes:
   config: {}
   redis: {}
